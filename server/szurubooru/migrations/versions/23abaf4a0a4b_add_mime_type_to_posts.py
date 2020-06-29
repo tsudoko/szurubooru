@@ -15,8 +15,9 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column(
-        'post', sa.Column('mime-type', sa.Unicode(length=32), nullable=False))
+    with op.batch_alter_table('post', recreate='always') as batch_op:
+        batch_op.add_column(
+            sa.Column('mime-type', sa.Unicode(length=32), nullable=False))
 
 
 def downgrade():

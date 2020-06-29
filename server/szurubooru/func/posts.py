@@ -485,6 +485,7 @@ def purge_post_signature(post: model.Post) -> None:
 
 
 def generate_post_signature(post: model.Post, content: bytes) -> None:
+    return # unimplemented for now
     try:
         unpacked_signature = image_hash.generate_signature(content)
         packed_signature = image_hash.pack_signature(unpacked_signature)
@@ -499,6 +500,7 @@ def generate_post_signature(post: model.Post, content: bytes) -> None:
 
 
 def update_all_post_signatures() -> None:
+    return # unimplemented for now
     posts_to_hash = (
         db.session
         .query(model.Post)
@@ -820,6 +822,7 @@ def search_by_image_exact(image_content: bytes) -> Optional[model.Post]:
 
 
 def search_by_image(image_content: bytes) -> List[Tuple[float, model.Post]]:
+    return [] # unimplemented for now
     query_signature = image_hash.generate_signature(image_content)
     query_words = image_hash.generate_words(query_signature)
 

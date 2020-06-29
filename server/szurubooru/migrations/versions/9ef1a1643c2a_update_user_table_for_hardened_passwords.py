@@ -47,17 +47,17 @@ class User(Base):
 
 
 def upgrade():
-    op.alter_column(
-        'user',
-        'password_hash',
-        existing_type=sa.VARCHAR(length=64),
-        type_=sa.Unicode(length=128),
-        existing_nullable=False)
-    op.add_column('user', sa.Column(
-        'password_revision',
-        sa.SmallInteger(),
-        nullable=True,
-        default=0))
+    with op.batch_alter_table('user') as batch_op:
+        batch_op.alter_column(
+            'password_hash',
+            existing_type=sa.VARCHAR(length=64),
+            type_=sa.Unicode(length=128),
+            existing_nullable=False)
+        batch_op.add_column(sa.Column(
+            'password_revision',
+            sa.SmallInteger(),
+            nullable=True,
+            default=0))
 
     session = sa.orm.session.Session(bind=op.get_bind())
     if session.query(User).count() >= 0:
@@ -72,11 +72,11 @@ def upgrade():
         session.flush()
     session.commit()
 
-    op.alter_column(
-        'user',
-        'password_revision',
-        existing_nullable=True,
-        nullable=False)
+    with op.batch_alter_table('user') as batch_op:
+        batch_op.alter_column(
+            'password_revision',
+            existing_nullable=True,
+            nullable=False)
 
 
 def downgrade():

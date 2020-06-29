@@ -38,7 +38,7 @@ def upgrade():
         sa.Column('auto_feature_time', sa.Integer(), nullable=False),
         sa.Column('auto_comment_creation_time', sa.Integer(), nullable=False),
         sa.Column('auto_comment_edit_time', sa.Integer(), nullable=False),
-        sa.ForeignKeyConstraint(['user_id'], ['user.id']),
+        sa.ForeignKeyConstraint(['user_id'], ['user.id'], name='post_user_id_fkey'),
         sa.PrimaryKeyConstraint('id'))
 
     op.create_table(

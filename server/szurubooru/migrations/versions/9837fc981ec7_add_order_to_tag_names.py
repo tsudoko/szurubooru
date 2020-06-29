@@ -28,11 +28,13 @@ class TagName(Base):
 
 
 def upgrade():
-    op.add_column('tag_name', sa.Column('ord', sa.Integer(), nullable=True))
+    with op.batch_alter_table('tag_name') as batch_op:
+        batch_op.add_column(sa.Column('ord', sa.Integer(), nullable=True))
     op.execute(TagName.__table__.update().values(ord=TagName.tag_name_id))
-    op.alter_column('tag_name', 'ord', nullable=False)
-    op.create_index(
-        op.f('ix_tag_name_ord'), 'tag_name', ['ord'], unique=False)
+    with op.batch_alter_table('tag_name', recreate='always') as batch_op:
+        batch_op.alter_column('ord', nullable=False)
+        batch_op.create_index(
+            batch_op.f('ix_tag_name_ord'), ['ord'], unique=False)
 
 
 def downgrade():

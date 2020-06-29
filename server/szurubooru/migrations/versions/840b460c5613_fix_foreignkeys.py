@@ -16,12 +16,14 @@ depends_on = None
 
 
 def upgrade():
-    op.drop_constraint('post_user_id_fkey', 'post', type_='foreignkey')
-    op.drop_constraint('snapshot_user_id_fkey', 'snapshot', type_='foreignkey')
-    op.create_foreign_key(
-        None, 'post', 'user', ['user_id'], ['id'], ondelete='SET NULL')
-    op.create_foreign_key(
-        None, 'snapshot', 'user', ['user_id'], ['id'], ondelete='set null')
+    with op.batch_alter_table('post') as batch_op:
+        batch_op.drop_constraint('post_user_id_fkey', type_='foreignkey')
+        batch_op.create_foreign_key(
+            'post_user_id_fkey', 'user', ['user_id'], ['id'], ondelete='SET NULL')
+    with op.batch_alter_table('snapshot') as batch_op:
+        batch_op.drop_constraint('snapshot_user_id_fkey', type_='foreignkey')
+        batch_op.create_foreign_key(
+            'snapshot_user_id_fkey', 'user', ['user_id'], ['id'], ondelete='set null')
 
 
 def downgrade():

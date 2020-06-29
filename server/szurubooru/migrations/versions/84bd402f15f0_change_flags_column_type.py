@@ -15,8 +15,9 @@ depends_on = None
 
 
 def upgrade():
-    op.drop_column('post', 'flags')
-    op.add_column('post', sa.Column('flags', sa.PickleType(), nullable=True))
+    with op.batch_alter_table('post') as batch_op:
+        batch_op.drop_column('flags')
+        batch_op.add_column(sa.Column('flags', sa.PickleType(), nullable=True))
 
 
 def downgrade():

@@ -15,13 +15,15 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column(
-        'tag_category', sa.Column('default', sa.Boolean(), nullable=True))
+    with op.batch_alter_table('tag_category') as batch_op:
+        batch_op.add_column(
+            sa.Column('default', sa.Boolean(), nullable=True))
     op.execute(
         sa.table('tag_category', sa.column('default'))
         .update()
         .values(default=False))
-    op.alter_column('tag_category', 'default', nullable=False)
+    with op.batch_alter_table('tag_category', recreate='always') as batch_op:
+        batch_op.alter_column('default', nullable=False)
 
 
 def downgrade():

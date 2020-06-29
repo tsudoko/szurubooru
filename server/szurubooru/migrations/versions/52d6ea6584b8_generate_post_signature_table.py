@@ -16,12 +16,13 @@ depends_on = None
 
 
 def upgrade():
-    ArrayType = sa.dialects.postgresql.ARRAY(sa.Integer, dimensions=1)
+    # TODO: reimplement, sqlite lacks ARRAY types, unnest, table/row aliases
+    #ArrayType = sa.dialects.postgresql.ARRAY(sa.Integer, dimensions=1)
     op.create_table(
         'post_signature',
         sa.Column('post_id', sa.Integer(), nullable=False),
         sa.Column('signature', sa.LargeBinary(), nullable=False),
-        sa.Column('words', ArrayType, nullable=False),
+        #sa.Column('words', ArrayType, nullable=False),
         sa.ForeignKeyConstraint(['post_id'], ['post.id']),
         sa.PrimaryKeyConstraint('post_id'))
 

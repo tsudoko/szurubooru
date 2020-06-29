@@ -154,11 +154,13 @@ class PostSignature(Base):
         nullable=False,
         index=True)
     signature = sa.Column('signature', sa.LargeBinary, nullable=False)
+    """
     words = sa.Column(
         'words',
         sa.dialects.postgresql.ARRAY(sa.Integer, dimensions=1),
         nullable=False,
         index=True)
+    """
 
     post = sa.orm.relationship('Post')
 

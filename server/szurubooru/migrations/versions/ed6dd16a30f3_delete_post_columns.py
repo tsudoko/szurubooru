@@ -15,17 +15,18 @@ depends_on = None
 
 
 def upgrade():
-    for column_name in [
-            'auto_comment_edit_time',
-            'auto_fav_count',
-            'auto_comment_creation_time',
-            'auto_feature_count',
-            'auto_comment_count',
-            'auto_score',
-            'auto_fav_time',
-            'auto_feature_time',
-            'auto_note_count']:
-        op.drop_column('post', column_name)
+    with op.batch_alter_table('post') as batch_op:
+        for column_name in [
+                'auto_comment_edit_time',
+                'auto_fav_count',
+                'auto_comment_creation_time',
+                'auto_feature_count',
+                'auto_comment_count',
+                'auto_score',
+                'auto_fav_time',
+                'auto_feature_time',
+                'auto_note_count']:
+            batch_op.drop_column(column_name)
 
 
 def downgrade():

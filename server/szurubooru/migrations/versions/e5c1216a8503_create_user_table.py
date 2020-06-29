@@ -26,8 +26,8 @@ def upgrade():
         sa.Column('creation_time', sa.DateTime(), nullable=False),
         sa.Column('last_login_time', sa.DateTime()),
         sa.Column('avatar_style', sa.Unicode(length=32), nullable=False),
-        sa.PrimaryKeyConstraint('id'))
-    op.create_unique_constraint('uq_user_name', 'user', ['name'])
+        sa.PrimaryKeyConstraint('id'),
+        sa.UniqueConstraint('name', name="uq_user_name"))
 
 
 def downgrade():

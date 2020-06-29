@@ -16,20 +16,18 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column(
-        'snapshot',
-        sa.Column('resource_name', sa.Unicode(length=64), nullable=False))
-    op.add_column(
-        'snapshot',
-        sa.Column('resource_pkey', sa.Integer(), nullable=False))
-    op.create_index(
-        op.f('ix_snapshot_resource_pkey'),
-        'snapshot',
-        ['resource_pkey'],
-        unique=False)
-    op.drop_index('ix_snapshot_resource_id', table_name='snapshot')
-    op.drop_column('snapshot', 'resource_id')
-    op.drop_column('snapshot', 'resource_repr')
+    with op.batch_alter_table('snapshot') as batch_op:
+        batch_op.add_column(
+            sa.Column('resource_name', sa.Unicode(length=64), nullable=False))
+        batch_op.add_column(
+            sa.Column('resource_pkey', sa.Integer(), nullable=False))
+        batch_op.create_index(
+            op.f('ix_snapshot_resource_pkey'),
+            ['resource_pkey'],
+            unique=False)
+        batch_op.drop_index('ix_snapshot_resource_id')
+        batch_op.drop_column('resource_id')
+        batch_op.drop_column('resource_repr')
 
 
 def downgrade():

@@ -24,7 +24,7 @@ def upgrade():
         sa.Column('operation', sa.Unicode(length=16), nullable=False),
         sa.Column('user_id', sa.Integer(), nullable=True),
         sa.Column('data', sa.PickleType(), nullable=True),
-        sa.ForeignKeyConstraint(['user_id'], ['user.id']),
+        sa.ForeignKeyConstraint(['user_id'], ['user.id'], name='snapshot_user_id_fkey'),
         sa.PrimaryKeyConstraint('id'))
 
 

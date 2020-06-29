@@ -15,9 +15,10 @@ depends_on = None
 
 
 def upgrade():
-    op.add_column(
-        'snapshot',
-        sa.Column('resource_repr', sa.Unicode(length=64), nullable=False))
+    # sqlite3 complains the column is NOT NULL with a default value of NULL despite there being no rows, recreate='always' fixes it
+    with op.batch_alter_table('snapshot', recreate='always') as batch_op:
+        batch_op.add_column(
+            sa.Column('resource_repr', sa.Unicode(length=64), nullable=False))
 
 
 def downgrade():

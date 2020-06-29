@@ -15,15 +15,16 @@ depends_on = None
 
 
 def upgrade():
-    op.alter_column(
-        'post', 'flags',
-        type_=sa.Unicode(32),
-        existing_type=sa.Unicode(200))
+    with op.batch_alter_table('post') as batch_op:
+        batch_op.alter_column(
+            'flags',
+            type_=sa.Unicode(32),
+            existing_type=sa.Unicode(200))
 
-    op.alter_column(
-        'post', 'source',
-        type_=sa.Unicode(2048),
-        existing_type=sa.Unicode(200))
+        batch_op.alter_column(
+            'source',
+            type_=sa.Unicode(2048),
+            existing_type=sa.Unicode(200))
 
 
 def downgrade():

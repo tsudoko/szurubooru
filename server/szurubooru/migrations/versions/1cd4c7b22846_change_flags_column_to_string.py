@@ -36,7 +36,8 @@ def upgrade():
                 flags=newflag
             )
         )
-    op.drop_column('post', 'oldflags')
+    with op.batch_alter_table('post') as batch_op:
+        batch_op.drop_column('oldflags')
 
 
 def downgrade():

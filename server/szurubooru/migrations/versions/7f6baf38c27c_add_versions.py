@@ -18,12 +18,14 @@ tables = ['tag_category', 'tag', 'user', 'post', 'comment']
 
 def upgrade():
     for table in tables:
-        op.add_column(table, sa.Column('version', sa.Integer(), nullable=True))
+        with op.batch_alter_table(table) as batch_op:
+            batch_op.add_column(sa.Column('version', sa.Integer(), nullable=True))
         op.execute(
             sa.table(table, sa.column('version'))
             .update()
             .values(version=1))
-        op.alter_column(table, 'version', nullable=False)
+        with op.batch_alter_table(table) as batch_op:
+            batch_op.alter_column('version', nullable=False)
 
 
 def downgrade():
